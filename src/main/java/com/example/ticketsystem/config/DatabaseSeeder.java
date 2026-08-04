@@ -1,9 +1,12 @@
 package com.example.ticketsystem.config;
 
 import com.example.ticketsystem.model.Category;
+import com.example.ticketsystem.model.User;
 import com.example.ticketsystem.repository.CategoryRepository;
+import com.example.ticketsystem.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
@@ -14,6 +17,8 @@ import java.util.List;
 public class DatabaseSeeder implements CommandLineRunner {
 
     private final CategoryRepository categoryRepository;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public void run(String... args) throws Exception {
@@ -33,7 +38,15 @@ public class DatabaseSeeder implements CommandLineRunner {
             );
 
             categoryRepository.saveAll(defaultCategories);
-            System.out.println(">> İstediğin 10 varsayılan kategori başarıyla MySQL'e eklendi!");
+            System.out.println(">> Varsayılan 10 kategori başarıyla MySQL'e eklendi!");
+        }
+
+        if (!userRepository.existsByUsername("admin")) {
+            User admin = new User();
+            admin.setUsername("admin");
+            admin.setPassword(passwordEncoder.encode("admin"));
+            userRepository.save(admin);
+            System.out.println(">> Varsayılan admin kullanıcısı (admin / admin) oluşturuldu!");
         }
     }
 }
