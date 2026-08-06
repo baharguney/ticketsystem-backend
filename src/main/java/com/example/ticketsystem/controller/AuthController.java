@@ -1,10 +1,11 @@
 package com.example.ticketsystem.controller;
 
-import com.example.ticketsystem.config.JwtService;
 import com.example.ticketsystem.dto.AuthRequest;
 import com.example.ticketsystem.dto.AuthResponse;
+import com.example.ticketsystem.model.Role;
 import com.example.ticketsystem.model.User;
 import com.example.ticketsystem.repository.UserRepository;
+import com.example.ticketsystem.service.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -37,6 +38,7 @@ public class AuthController {
         User user = new User();
         user.setUsername(request.getUsername());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setRole(Role.ROLE_USER); // Yeni kaydolan kullanıcıya varsayılan USER rolü atandı
 
         userRepository.save(user);
 

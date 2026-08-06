@@ -1,6 +1,7 @@
 package com.example.ticketsystem.config;
 
 import com.example.ticketsystem.model.Category;
+import com.example.ticketsystem.model.Role;
 import com.example.ticketsystem.model.User;
 import com.example.ticketsystem.repository.CategoryRepository;
 import com.example.ticketsystem.repository.UserRepository;
@@ -45,8 +46,18 @@ public class DatabaseSeeder implements CommandLineRunner {
             User admin = new User();
             admin.setUsername("admin");
             admin.setPassword(passwordEncoder.encode("admin"));
+            admin.setRole(Role.ROLE_ADMIN);
             userRepository.save(admin);
             System.out.println(">> Varsayılan admin kullanıcısı (admin / admin) oluşturuldu!");
+        }
+
+        if (!userRepository.existsByUsername("user")) {
+            User user = new User();
+            user.setUsername("user");
+            user.setPassword(passwordEncoder.encode("user123"));
+            user.setRole(Role.ROLE_USER);
+            userRepository.save(user);
+            System.out.println(">> Varsayılan standart kullanıcı (user / user123) oluşturuldu!");
         }
     }
 }

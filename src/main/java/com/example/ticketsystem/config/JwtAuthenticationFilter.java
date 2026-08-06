@@ -1,6 +1,7 @@
 package com.example.ticketsystem.config;
 
 import com.example.ticketsystem.repository.UserRepository;
+import com.example.ticketsystem.service.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

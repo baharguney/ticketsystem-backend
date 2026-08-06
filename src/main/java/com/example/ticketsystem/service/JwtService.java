@@ -1,4 +1,4 @@
-package com.example.ticketsystem.config;
+package com.example.ticketsystem.service;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -22,13 +22,25 @@ public class JwtService {
         return extractClaim(token, Claims::getSubject);
     }
 
+    public String extractRole(String token) {
+        return extractClaim(token, claims -> claims.get("role", String.class));
+    }
+
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
 
+    // --- EKLENEN METOD: Tek parametreli eski çağrılar için varsayılan rol atar ---
     public String generateToken(String username) {
-        return generateToken(new HashMap<>(), username);
+        return generateToken(username, "ROLE_USER");
+    }
+
+    // --- Rol bilgisi alan yeni metod ---
+    public String generateToken(String username, String role) {
+        Map<String, Object> extraClaims = new HashMap<>();
+        extraClaims.put("role", role);
+        return generateToken(extraClaims, username);
     }
 
     public String generateToken(Map<String, Object> extraClaims, String username) {
